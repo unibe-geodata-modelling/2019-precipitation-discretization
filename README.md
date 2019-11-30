@@ -2,7 +2,7 @@
 Discretisation of precipitation
 
 Resampling and reprojection of Cosmo-Rea2 & Cosmo-Rea6 precipitation reanalysis data
-For the developement used a repo of our own: https://github.com/AndyG-unibe/Resample-ReprojectCosmoRea2-6
+For the developement used a repo of our own: https://github.com/AndyG-unibe/Resample-ReprojectCosmoRea2-6. The script and the readme here are just transferred. 
 
 ##### Authors
 
