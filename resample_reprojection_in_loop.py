@@ -14,15 +14,17 @@ import rasterio
 import wget
 import ftplib
 import rasterio as rio
+from pyproj import CRS
 from rasterio.warp import calculate_default_transform, reproject, Resampling
 
 # Reproject Function from https://www.earthdatascience.org/courses/earth-analytics-python/lidar-raster-data/reproject-raster/
-def reproject_et(inpath, outpath, new_crs):
-    dst_crs = new_crs # CRS for web meractor
+def reproject_et(inpath, outpath, new_crs):# new_crs: use 'EPSG:4326' for WGS 84
+    dst_crs = new_crs 
+    source_crs = CRS.from_proj4("+proj=ob_tran +o_proj=longlat +o_lon_p=-162 +o_lat_p=39.25 +lon_0=180 +to_meter=0.01745329") #CRS used by COSMO-REA6
 
     with rio.open(inpath) as src:
         transform, width, height = calculate_default_transform(
-            src.crs, dst_crs, src.width, src.height, *src.bounds)
+            source_crs, dst_crs, src.width, src.height, *src.bounds)
         kwargs = src.meta.copy()
         kwargs.update({
             'crs': dst_crs,
@@ -344,5 +346,6 @@ for y in years:
         # Reprojection of the data
         f_tmp = f.replace('.grb', '_reprojected.nc')
         reproject_et(os.path.join(output_folder, str(y) + '_netcdf', f.replace('.grb', '.nc')),
-                     os.path.join(output_folder, str(y) + '_netcdf', f_tmp), 'EPSG:3857')  # Web Mercator reproject
+                     os.path.join(output_folder, str(y) + '_netcdf', f_tmp), 'EPSG:4326')  # WGS 84
+
 
